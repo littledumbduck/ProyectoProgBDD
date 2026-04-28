@@ -8,10 +8,21 @@ public class Room {
 
     // Constructor
     public Room(int roomNumber, String roomType, int price, char status) {
-        this.roomNumber = roomNumber;
-        this.roomType = roomType;
-        this.price = price;
-        this.status = status;
+        try {
+            this.roomNumber = roomNumber;
+            this.roomType = roomType;
+            this.price = price;
+
+            status = Character.toLowerCase(status);
+
+            if (status == 'd' || status == 'o' || status == 'm') {
+                this.status = status;
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Getters/Setters
