@@ -2,24 +2,23 @@ package entities;
 
 public class Book {
     private int idBook;
-    private int idCustomer;
-    private int idRoom;
+    private Customer customer;
+    private Room room;
     private String dateEntry;
     private String dateLeave;
     private char purchaseStatus;
 
     // Constructor
-    public Book(int idBook, int idCustomer, int idRoom, String dateEntry, String dateLeave, char purchaseStatus) {
+    public Book(int idBook, Customer customer, Room room, String dateEntry, String dateLeave, char purchaseStatus) {
         this.idBook = idBook;
-        this.idCustomer = idCustomer;
-        this.idRoom = idRoom;
+        this.customer = customer;
+        this.room = room;
         this.dateEntry = dateEntry;
         this.dateLeave = dateLeave;
         this.purchaseStatus = purchaseStatus;
     }
 
     // Getters/Setters
-
     public int getIdBook() {
         return idBook;
     }
@@ -28,20 +27,20 @@ public class Book {
         this.idBook = idBook;
     }
 
-    public int getIdCustomer() {
-        return idCustomer;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setIdCustomer(int idCustomer) {
-        this.idCustomer = idCustomer;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public int getIdRoom() {
-        return idRoom;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setIdRoom(int idRoom) {
-        this.idRoom = idRoom;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public String getDateEntry() {
