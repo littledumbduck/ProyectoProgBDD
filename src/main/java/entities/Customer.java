@@ -5,10 +5,10 @@ public class Customer {
     private String name;
     private String surname;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
 
     // Constructor
-    public Customer(String dni, String nombre, String apellidos, String email, int telefono) {
+    public Customer(String dni, String nombre, String apellidos, String email, String telefono) {
         this.dni = dni;
         this.name = nombre;
         this.surname = apellidos;
@@ -51,11 +51,11 @@ public class Customer {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 }
