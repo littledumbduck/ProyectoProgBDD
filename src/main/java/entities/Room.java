@@ -2,14 +2,16 @@ package entities;
 
 public class Room {
     private int roomNumber;
+    private int roomFloor;
     private String roomType;
-    private int price;
+    private double price;
     private char status;
 
     // Constructor
-    public Room(int roomNumber, String roomType, int price, char status) {
+    public Room(int roomNumber, int roomFloor, String roomType, double price, char status) {
         try {
             this.roomNumber = roomNumber;
+            this.roomFloor = roomFloor;
             this.roomType = roomType;
             this.price = price;
 
@@ -26,8 +28,6 @@ public class Room {
     }
 
     // Getters/Setters
-
-
     public int getRoomNumber() {
         return roomNumber;
     }
@@ -44,11 +44,11 @@ public class Room {
         this.roomType = roomType;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -56,11 +56,31 @@ public class Room {
         return status;
     }
 
+    // Variables permitted: d/o/m
     public void setStatus(char status) {
-        this.status = status;
+        try {
+
+            status = Character.toLowerCase(status);
+
+            if (status == 'd' || status == 'o' || status == 'm') {
+                this.status = status;
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    // Functions
+    public int getRoomFloor() {
+        return roomFloor;
+    }
+
+    public void setRoomFloor(int roomFloor) {
+        this.roomFloor = roomFloor;
+    }
+
+// Functions
 
 
 

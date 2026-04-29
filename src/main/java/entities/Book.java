@@ -2,17 +2,18 @@ package entities;
 
 public class Book {
     private int idBook;
-    private Customer customer;
-    private Room room;
+    private String customerDni;
+    private int roomId;
     private String dateEntry;
     private String dateLeave;
     private char purchaseStatus;
+    private ConexionMySQL sql;
 
     // Constructor
-    public Book(int idBook, Customer customer, Room room, String dateEntry, String dateLeave, char purchaseStatus) {
+    public Book(int idBook, String customerDni, int roomId, String dateEntry, String dateLeave, char purchaseStatus) {
         this.idBook = idBook;
-        this.customer = customer;
-        this.room = room;
+        this.customerDni = customerDni;
+        this.roomId = roomId;
         this.dateEntry = dateEntry;
         this.dateLeave = dateLeave;
         this.purchaseStatus = purchaseStatus;
@@ -27,20 +28,20 @@ public class Book {
         this.idBook = idBook;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public String getCustomerDni() {
+        return customerDni;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerDni(String customerDni) {
+        this.customerDni = customerDni;
     }
 
-    public Room getRoom() {
-        return room;
+    public int getRoomId() {
+        return roomId;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 
     public String getDateEntry() {
@@ -66,4 +67,15 @@ public class Book {
     public void setPurchaseStatus(char purchaseStatus) {
         this.purchaseStatus = purchaseStatus;
     }
+
+    // Functions
+
+    public void addBook(int idCustomer, String customerDni, int roomId,
+                        String dateEntry, String dateLeave, char purchaseStatus) {
+        Book temp = new Book(idCustomer, customerDni, roomId, dateEntry, dateLeave, purchaseStatus);
+
+        sql = new ConexionMySQL();
+
+    }
+
 }
