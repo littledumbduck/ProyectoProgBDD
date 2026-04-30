@@ -35,3 +35,29 @@ CREATE TABLE book
     CONSTRAINT fk_room_book FOREIGN KEY (room_id)
         REFERENCES room (roomNumber) ON DELETE CASCADE
 );
+
+-- Planta 1 (7 habitaciones)
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (1, 'S', 45.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (1, 'S', 45.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (1, 'D', 75.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (1, 'D', 75.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (1, 'D', 75.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (1, 'S', 45.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (1, 'D', 75.00, 'D');
+
+-- Planta 2 (7 habitaciones)
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (2, 'S', 50.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (2, 'S', 50.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (2, 'D', 80.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (2, 'D', 80.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (2, 'D', 85.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (2, 'D', 85.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (2, 'S', 50.00, 'D');
+
+-- Planta 3 (6 habitaciones)
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (3, 'D', 90.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (3, 'D', 90.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (3, 'S', 120.00, 'D'); -- Suite
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (3, 'S', 120.00, 'D'); -- Suite
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (3, 'D', 95.00, 'D');
+INSERT INTO room (roomfloor, roomType, price, status) VALUES (3, 'S', 150.00, 'D'); -- Suite Presidencial
