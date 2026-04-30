@@ -1,5 +1,3 @@
-import entities.ConexionMySQL;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
