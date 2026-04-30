@@ -1,5 +1,7 @@
 package entities;
 
+import java.sql.SQLException;
+
 public class Book {
     private int idBook;
     private String customerDni;
@@ -70,11 +72,19 @@ public class Book {
 
     // Functions
 
-    public void addBook(int idCustomer, String customerDni, int roomId,
-                        String dateEntry, String dateLeave, char purchaseStatus) {
-        Book temp = new Book(idCustomer, customerDni, roomId, dateEntry, dateLeave, purchaseStatus);
+    public void addBook(String customerDni, int roomId, String dateEntry,
+                        String dateLeave, char purchaseStatus) throws SQLException {
 
         sql = new ConexionMySQL();
+
+        String command = "INSERT INTO book (customer_dni, room_id, dateEntry, dateLeave, purchaseStatus) VALUES ("
+                + "'" + customerDni + "', "
+                + roomId + ", "
+                + "'" + dateEntry + "', "
+                + "'" + dateLeave + "', "
+                + (purchaseStatus == '1' || purchaseStatus == 'T' ? 1 : 0) + ")";
+
+        sql.ejecutarInsertDeleteUpdate(command);
 
     }
 
