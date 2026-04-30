@@ -5,6 +5,7 @@ import javax.swing.*;
 public class Main {
     private JPanel MainFrame;
     private JButton button1;
+    private JTextField ghjghjghjTextField;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Main");
