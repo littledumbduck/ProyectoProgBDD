@@ -77,14 +77,14 @@ public class Book {
 
         sql = new ConexionMySQL();
 
-        String command = "INSERT INTO book (customer_dni, room_id, dateEntry, dateLeave, purchaseStatus) VALUES ("
+        String sentence = "INSERT INTO book (customer_dni, room_id, dateEntry, dateLeave, purchaseStatus) VALUES ("
                 + "'" + customerDni + "', "
                 + roomId + ", "
                 + "'" + dateEntry + "', "
                 + "'" + dateLeave + "', "
                 + (purchaseStatus == '1' || purchaseStatus == 'T' ? 1 : 0) + ")";
 
-        sql.ejecutarInsertDeleteUpdate(command);
+        sql.ejecutarInsertDeleteUpdate(sentence);
 
     }
 
