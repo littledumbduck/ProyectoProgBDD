@@ -29,7 +29,7 @@ public class ConexionMySQL {
     }
 
     /**
-     * Nuevo metodo para leer el archivo .properties
+     * Nuevo metodo para leer el archivo .properties y establecer la conexión con la BD
      */
     private void cargarConfiguracion() {
         Properties prop = new Properties();
@@ -40,15 +40,15 @@ public class ConexionMySQL {
             this.HOST = prop.getProperty("db.host", "");
             this.USUARIO = prop.getProperty("db.user", "");
             this.PASS = prop.getProperty("db.pass", "");
-            this.BD = prop.getProperty("db.name", "dam");
+            this.BD = prop.getProperty("db.name", "");
 
         } catch (IOException e) {
             System.err.println("Ojo: No se pudo leer database.properties, usando valores por defecto.");
             // Valores por defecto si el archivo falla
-            this.HOST = "localhost";
-            this.USUARIO = "root";
+            this.HOST = "";
+            this.USUARIO = "";
             this.PASS = "";
-            this.BD = "dam";
+            this.BD = "";
         }
     }
 

@@ -14,8 +14,10 @@ public class Room {
         this.roomType = roomType;
         this.price = price;
 
+        // Variable para el estado de la habitación
         status = Character.toLowerCase(status);
 
+        // Establece el estado
         possibleStatus(status);
     }
 
@@ -58,18 +60,7 @@ public class Room {
 
     // Variables permitted: d/o/m
     public void setStatus(char status) {
-        try {
-
-            status = Character.toLowerCase(status);
-
-            if (status == 'd' || status == 'o' || status == 'm') {
-                this.status = status;
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        possibleStatus(status);
     }
 
     public int getRoomFloor() {
@@ -82,6 +73,7 @@ public class Room {
 
 // Functions
 
+    // Asigna un estado o devuelve una excepción
     private void possibleStatus(char status) {
         try {
             status = Character.toLowerCase(status);

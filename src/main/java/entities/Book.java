@@ -77,8 +77,10 @@ public class Book {
     public void addBook(String customerDni, int roomId, String dateEntry,
                         String dateLeave, char purchaseStatus) throws SQLException {
 
+        // Objeto para hacer sentencias de SQL
         sql = new ConexionMySQL();
 
+        // Cadena para meter la sentencia en la BD
         String sentence = "INSERT INTO book (customer_dni, room_id, dateEntry, dateLeave, purchaseStatus) VALUES ("
                 + "'" + customerDni + "', "
                 + roomId + ", "
@@ -86,6 +88,7 @@ public class Book {
                 + "'" + dateLeave + "', "
                 + (purchaseStatus == '1' || purchaseStatus == 'T' ? 1 : 0) + ")";
 
+        // Función para ejecutar la sentencia
         sql.ejecutarInsertDeleteUpdate(sentence);
 
     }
