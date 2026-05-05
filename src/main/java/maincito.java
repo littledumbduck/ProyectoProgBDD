@@ -1,4 +1,4 @@
-import entities.ConexionMySQL;
+import utilities.ConexionMySQL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

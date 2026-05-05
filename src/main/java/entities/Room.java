@@ -9,22 +9,22 @@ public class Room {
 
     // Constructor
     public Room(int roomNumber, int roomFloor, String roomType, double price, char status) {
-        try {
-            this.roomNumber = roomNumber;
-            this.roomFloor = roomFloor;
-            this.roomType = roomType;
-            this.price = price;
+        this.roomNumber = roomNumber;
+        this.roomFloor = roomFloor;
+        this.roomType = roomType;
+        this.price = price;
 
-            status = Character.toLowerCase(status);
+        status = Character.toLowerCase(status);
 
-            if (status == 'd' || status == 'o' || status == 'm') {
-                this.status = status;
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        possibleStatus(status);
+    }
+
+    public Room(int roomNumber, int roomFloor, String roomType, double price) {
+        this.roomNumber = roomNumber;
+        this.roomFloor = roomFloor;
+        this.roomType = roomType;
+        this.price = price;
+        this.status = 'd';
     }
 
     // Getters/Setters
@@ -82,6 +82,17 @@ public class Room {
 
 // Functions
 
+    private void possibleStatus(char status) {
+        try {
+            status = Character.toLowerCase(status);
 
-
+            if (status == 'd' || status == 'o' || status == 'm') {
+                this.status = status;
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

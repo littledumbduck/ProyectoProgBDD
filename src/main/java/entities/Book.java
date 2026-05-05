@@ -1,5 +1,7 @@
 package entities;
 
+import utilities.ConexionMySQL;
+
 import java.sql.SQLException;
 
 public class Book {
