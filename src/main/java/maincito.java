@@ -6,7 +6,7 @@ import java.sql.SQLException;
 public class maincito {
 
     public static void main(String[] args) {
-        ConexionMySQL X = new ConexionMySQL("root", "", "dam");
+        ConexionMySQL X = new ConexionMySQL();
         try {
             X.conectar();
 
