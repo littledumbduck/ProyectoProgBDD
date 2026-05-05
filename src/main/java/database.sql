@@ -1,5 +1,14 @@
+-- Table User
+CREATE TABLE user
+(
+    id                  INT             NOT NULL AUTO_INCREMENT,
+    username            VARCHAR(25)     NOT NULL,
+    password            VARCHAR(25)     NOT NULL,
+    CONSTRAINT pk_id PRIMARY KEY (id)
+);
+
 -- Table Customer
-CREATE TABLE IF NOT EXISTS customer
+CREATE TABLE customer
 (
     dni             VARCHAR(9)      NOT NULL,
     name            VARCHAR(25)     NOT NULL,
