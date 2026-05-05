@@ -39,4 +39,4 @@ build/
 .DS_Store
 
 ### database properties ###
-database.properties
+.database.properties
