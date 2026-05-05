@@ -37,10 +37,10 @@ public class ConexionMySQL {
             prop.load(fis);
 
             // Asignamos los valores del archivo a nuestras variables
-            this.HOST = prop.getProperty("db.host", "localhost");
-            this.USUARIO = prop.getProperty("db.user", "root");
+            this.HOST = prop.getProperty("db.host", "");
+            this.USUARIO = prop.getProperty("db.user", "");
             this.PASS = prop.getProperty("db.pass", "");
-            this.BD = prop.getProperty("db.name", "test");
+            this.BD = prop.getProperty("db.name", "dam");
 
         } catch (IOException e) {
             System.err.println("Ojo: No se pudo leer database.properties, usando valores por defecto.");
