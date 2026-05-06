@@ -4,15 +4,14 @@ import entities.Book;
 import utilities.ConexionMySQL;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BookDAO {
     private Book book;
-    private ConexionMySQL sql;
 
     public BookDAO (Book book) {
         this.book = book;
-        this.sql = new ConexionMySQL();
     }
 
     public void addBook() throws SQLException {
@@ -33,6 +32,71 @@ public class BookDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void deleteBook() throws SQLException {
+        ConexionMySQL sql = new ConexionMySQL();
+        String statement = "DELETE FROM `book` WHERE idBook = ?";
+
+        try (PreparedStatement pstmt = sql.executeStatement(statement)) {
+            pstmt.setInt(1, this.book.getIdBook());
+
+            pstmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet searchBook() throws SQLException {
+        ConexionMySQL sql = new ConexionMySQL();
+        String statement = "SELECT * FROM book WHERE idBook = ?";
+        ResultSet rs = null;
+
+        try (PreparedStatement pstmt = sql.executeStatement(statement)) {
+            pstmt.setInt(1, this.book.getIdBook());
+
+            rs = pstmt.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rs;
+
+    }
+
+    public ResultSet searchBookByCustomer(String dni) throws SQLException {
+        ConexionMySQL sql = new ConexionMySQL();
+        String statement = "SELECT * FROM book WHERE dni_customer = ?";
+        ResultSet rs = null;
+
+        try (PreparedStatement pstmt = sql.executeStatement(statement)) {
+            pstmt.setString(1, dni);
+
+            rs = pstmt.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rs;
+
+    }
+
+    public ResultSet searchBookByRoom(String roomNumber) throws SQLException {
+        ConexionMySQL sql = new ConexionMySQL();
+        String statement = "SELECT * FROM book WHERE room_id = ?";
+        ResultSet rs = null;
+
+        try (PreparedStatement pstmt = sql.executeStatement(statement)) {
+            pstmt.setString(1, roomNumber);
+
+            rs = pstmt.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rs;
 
     }
 }
