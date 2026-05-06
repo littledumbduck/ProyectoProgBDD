@@ -1,5 +1,5 @@
 import entities.Book;
-import entities.BookDAO;
+import DAO.BookDAO;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;

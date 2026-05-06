@@ -1,5 +1,6 @@
-package entities;
+package DAO;
 
+import entities.User;
 import utilities.ConexionMySQL;
 
 import java.sql.PreparedStatement;

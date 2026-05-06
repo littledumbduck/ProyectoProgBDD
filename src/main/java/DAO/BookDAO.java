@@ -1,9 +1,9 @@
-package entities;
+package DAO;
 
+import entities.Book;
 import utilities.ConexionMySQL;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BookDAO {
