@@ -4,12 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Calendar;
 import java.util.Properties;
 import java.util.TimeZone;
+import java.sql.PreparedStatement;
 
 public class ConexionMySQL {
 
@@ -60,7 +59,7 @@ public class ConexionMySQL {
         }
     }
 
-    public void conectar() throws SQLException {
+    public void connect() throws SQLException {
         if (connection == null || connection.isClosed()) {
             registrarDriver();
             Calendar now = Calendar.getInstance();
@@ -80,13 +79,8 @@ public class ConexionMySQL {
         }
     }
 
-    public ResultSet ejecutarSelect(String consulta) throws SQLException {
-        Statement stmt = connection.createStatement();
-        return stmt.executeQuery(consulta);
-    }
-
-    public int ejecutarInsertDeleteUpdate(String consulta) throws SQLException {
-        Statement stmt = connection.createStatement();
-        return stmt.executeUpdate(consulta);
+    public PreparedStatement executeStatement(String statement) throws SQLException {
+        connect();
+        return connection.prepareStatement(statement);
     }
 }

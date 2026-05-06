@@ -2,6 +2,7 @@ package entities;
 
 import utilities.ConexionMySQL;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -19,19 +20,32 @@ public class UserDAO {
     public void createUsername () throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
 
-        sql.ejecutarInsertDeleteUpdate("INSERT INTO user (username, password)\n VALUES ('" + this.user.getUsername() + "', '" + this.user.getPassword().hashCode() + "');");
+        sql.executeStatement("INSERT INTO user (username, password)\n VALUES ('" + this.user.getUsername() + "', '" + this.user.getPassword().hashCode() + "');");
     }
 
     public void deleteUsername () throws SQLException {
-        sql.ejecutarInsertDeleteUpdate("DELETE FROM `user` WHERE username = " + this.user.getUsername());
+        sql.executeStatement("DELETE FROM `user` WHERE username = " + this.user.getUsername());
     }
 
     public boolean checkLogin () throws SQLException {
-        resulSet = sql.ejecutarSelect("SELECT * FROM user WHERE username = '" + this.user.getUsername() + "' AND password = ¡" + this.user.getPassword() + "';");
+        ConexionMySQL db = new ConexionMySQL();
+        String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
 
-        while (resulSet.next()) {
-            return true;
+        try (PreparedStatement pstmt = db.executeStatement(sql)) {
+            pstmt.setString(1, this.user.getUsername());
+            pstmt.setString(2, this.user.getPassword());
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }

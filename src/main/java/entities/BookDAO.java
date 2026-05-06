@@ -2,6 +2,8 @@ package entities;
 
 import utilities.ConexionMySQL;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BookDAO {
@@ -13,22 +15,24 @@ public class BookDAO {
         this.sql = new ConexionMySQL();
     }
 
-    public void addBook(String customerDni, int roomId, String dateEntry,
-                        String dateLeave, char purchaseStatus) throws SQLException {
+    public void addBook() throws SQLException {
+        ConexionMySQL db = new ConexionMySQL();
+        String sql = "INSERT INTO `book`(`idBook`, `customer_dni`, `room_id`, `dateEntry`, `dateLeave`, `purchaseStatus`) " +
+                "VALUES (?,?,?,?,?,?)";
 
-        // Objeto para hacer sentencias de SQL
-        sql = new ConexionMySQL();
+        try (PreparedStatement pstmt = db.executeStatement(sql)) {
+            pstmt.setInt(1, this.book.getIdBook());
+            pstmt.setString(2, this.book.getCustomerDni());
+            pstmt.setInt(3, this.book.getRoomId());
+            pstmt.setString(4, this.book.getDateEntry());
+            pstmt.setString(5, this.book.getDateLeave());
+            pstmt.setString(6, String.valueOf(this.book.getPurchaseStatus()));
 
-        // Cadena para meter la sentencia en la BD
-        String sentence = "INSERT INTO book (customer_dni, room_id, dateEntry, dateLeave, purchaseStatus) VALUES ("
-                + "'" + this.book.getCustomerDni() + "', "
-                + this.book.getRoomId() + ", "
-                + "'" + this.book.getDateEntry() + "', "
-                + "'" + this.book.getDateLeave() + "', "
-                + (this.book.getPurchaseStatus() == '1' || this.book.getPurchaseStatus() == 'T' ? 1 : 0) + ")";
+            pstmt.executeUpdate();
 
-        // Función para ejecutar la sentencia
-        sql.ejecutarInsertDeleteUpdate(sentence);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 }
