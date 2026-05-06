@@ -45,8 +45,20 @@ public class Main {
         itemClientes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí en el futuro llamaremos a la nueva ventana de clientes
-                JOptionPane.showMessageDialog(frame, "¡Pronto abriremos la ventana de Clientes!");
+                // Creamos una nueva ventana emergente (JDialog)
+                JDialog customerDialog = new JDialog(frame, "Gestión de Clientes", true);
+                CustomerForm form = new CustomerForm();
+
+                // Le metemos el panel que acabas de diseñar
+                customerDialog.setContentPane(form.getCustomerPanel());
+                // Ajustamos el tamaño para que no se vea minúscula
+                customerDialog.setSize(600, 400);
+
+                // Centramos la ventanita respecto a la ventana principal
+                customerDialog.setLocationRelativeTo(frame);
+
+                // La mostramos
+                customerDialog.setVisible(true);
             }
         });
 
