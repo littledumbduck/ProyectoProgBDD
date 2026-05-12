@@ -74,6 +74,19 @@ public class Main {
             }
         });
 
+        itemReservas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog bookingDialog = new JDialog(frame, "Gestión de Reservas", true);
+                BookingForm form = new BookingForm();
+
+                bookingDialog.setContentPane(form.getBookingPanel());
+                bookingDialog.setSize(600, 400);
+                bookingDialog.setLocationRelativeTo(frame);
+                bookingDialog.setVisible(true);
+            }
+        });
+
         // 4. Configuración final de la ventana
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600); // Tamaño inicial

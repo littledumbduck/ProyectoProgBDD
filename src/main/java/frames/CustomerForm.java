@@ -10,7 +10,6 @@ public class CustomerForm {
     private JPanel customerPanel;
     private JTable customerTable;
     private JButton btnAddCustomer;
-    private JLabel DNI;
     private JTextField txtDni;
     private JTextField txtName;
     private JTextField txtSurname;
