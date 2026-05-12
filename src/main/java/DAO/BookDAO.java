@@ -29,16 +29,13 @@ public class BookDAO {
 
             pstmt.executeUpdate();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
     }
 
     public void updateBook() throws SQLException {
         ConexionMySQL db = new ConexionMySQL();
-        String sql = "UPDATE `book` SET `idBook`='?',`customer_dni`='?',`room_id`='?',`dateEntry`='?'," +
-                "`dateLeave`='?',`purchaseStatus`='?' WHERE idBook = ?";
+        String sql = "UPDATE `book` SET `idBook`=?,`customer_dni`=?,`room_id`=?,`dateEntry`=?," +
+                "`dateLeave`=?,`purchaseStatus`=? WHERE idBook = ?";
 
         try (PreparedStatement pstmt = db.executeStatement(sql)) {
             pstmt.setInt(1, this.book.getIdBook());
@@ -51,10 +48,7 @@ public class BookDAO {
 
             pstmt.executeUpdate();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
     }
 
     public void deleteBook() throws SQLException {
@@ -63,62 +57,31 @@ public class BookDAO {
 
         try (PreparedStatement pstmt = sql.executeStatement(statement)) {
             pstmt.setInt(1, this.book.getIdBook());
-
             pstmt.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
     public ResultSet searchBook() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "SELECT * FROM book WHERE idBook = ?";
-        ResultSet rs = null;
-
-        try (PreparedStatement pstmt = sql.executeStatement(statement)) {
-            pstmt.setInt(1, this.book.getIdBook());
-
-            rs = pstmt.executeQuery();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return rs;
-
+        PreparedStatement pstmt = sql.executeStatement(statement);
+        pstmt.setInt(1, this.book.getIdBook());
+        return pstmt.executeQuery();
     }
 
-    public ResultSet searchBookByCustomer(String dni) throws SQLException {
+    public ResultSet searchBookByCustomer() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
-        String statement = "SELECT * FROM book WHERE dni_customer = ?";
-        ResultSet rs = null;
-
-        try (PreparedStatement pstmt = sql.executeStatement(statement)) {
-            pstmt.setString(1, dni);
-
-            rs = pstmt.executeQuery();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return rs;
-
+        String statement = "SELECT * FROM book WHERE customer_dni = ?";
+        PreparedStatement pstmt = sql.executeStatement(statement);
+        pstmt.setString(1, this.book.getCustomerDni());
+        return pstmt.executeQuery();
     }
 
-    public ResultSet searchBookByRoom(String roomNumber) throws SQLException {
+    public ResultSet searchBookByRoom() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "SELECT * FROM book WHERE room_id = ?";
-        ResultSet rs = null;
-
-        try (PreparedStatement pstmt = sql.executeStatement(statement)) {
-            pstmt.setString(1, roomNumber);
-
-            rs = pstmt.executeQuery();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return rs;
-
+        PreparedStatement pstmt = sql.executeStatement(statement);
+        pstmt.setInt(1, this.book.getRoomId());
+        return pstmt.executeQuery();
     }
 }

@@ -11,7 +11,6 @@ public class Book {
     private String dateEntry;
     private String dateLeave;
     private char purchaseStatus;
-    private ConexionMySQL sql;
 
     // Constructor
     public Book(int idBook, String customerDni, int roomId, String dateEntry, String dateLeave, char purchaseStatus) {
