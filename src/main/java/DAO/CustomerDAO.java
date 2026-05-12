@@ -2,7 +2,6 @@ package DAO;
 
 import entities.Customer;
 import utilities.ConexionMySQL;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -57,12 +56,12 @@ public class CustomerDAO {
         }
     }
 
-    public ResultSet searchCustomer() throws SQLException {
+    public ResultSet searchCustomer(String dni) throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "SELECT * FROM customer WHERE dni = ?";
 
         PreparedStatement pstmt = sql.executeStatement(statement);
-        pstmt.setString(1, this.customer.getDni());
+        pstmt.setString(1, dni);
 
         return pstmt.executeQuery();
 

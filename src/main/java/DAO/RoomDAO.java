@@ -27,17 +27,14 @@ public class RoomDAO {
             pstmt.setString(5, String.valueOf(this.room.getStatus()));
 
             pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
     }
 
     public void updateRoom() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
-        String statement = "UPDATE `room` SET `roomNumber`='?',`roomfloor`='?',`roomType`='?'," +
-                "`price`='?',`status`='?' WHERE roomNumber = ?";
+        String statement = "UPDATE `room` SET `roomNumber`=?,`roomfloor`=?,`roomType`=?," +
+                "`price`=?,`status`=? WHERE roomNumber = ?";
 
         try (PreparedStatement pstmt = sql.executeStatement(statement)) {
             pstmt.setInt(1, this.room.getRoomNumber());
@@ -49,8 +46,6 @@ public class RoomDAO {
 
             pstmt.executeUpdate();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
     }
@@ -62,28 +57,17 @@ public class RoomDAO {
         try (PreparedStatement pstmt = sql.executeStatement(statement)) {
             pstmt.setInt(1, this.room.getRoomNumber());
 
-            pstmt.execute();
+            pstmt.executeUpdate();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
-    public ResultSet searchRoom() throws SQLException {
+    public ResultSet searchRoom(int roomId) throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "SELECT * FROM room WHERE roomNumber = ?";
-        ResultSet rs = null;
-
-        try (PreparedStatement pstmt = sql.executeStatement(statement)) {
-            pstmt.setInt(1, this.room.getRoomNumber());
-
-            rs = pstmt.executeQuery();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return rs;
-
+        PreparedStatement pstmt = sql.executeStatement(statement);
+        pstmt.setInt(1, roomId);
+        return pstmt.executeQuery();
     }
 
 }
