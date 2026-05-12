@@ -47,11 +47,14 @@ public class BookingForm {
 
                 // 4. USAMOS EL DAO PARA GUARDAR EN LA BASE DE DATOS
 
-                Book booking = new Book(bookId, dni, roomId, dateEntry, dateLeave, purchaseStatus);
+                int idParsed = 0;
+                int roomParsed = 0;
+                char statusParsed = ' ';
+
+                Book booking = new Book(Integer.parseInt(bookId), dni, Integer.parseInt(roomId), dateEntry, dateLeave, purchaseStatus.toLowerCase().charAt(0));
                 BookDAO bookingDAO = new BookDAO(booking);
 
                 try {
-                    int roomId = Integer.parseInt(roomIdStr);
 
                     bookingDAO.addBook();
 
@@ -65,11 +68,6 @@ public class BookingForm {
                     txtDateLeave.setText("");
                     txtPurchaseStatus.setText("");
 
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null,
-                            "El número de habitación debe ser un número válido.",
-                            "Error de formato",
-                            JOptionPane.ERROR_MESSAGE);
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null,
                             "Error al guardar en la base de datos: " + ex.getMessage(),
@@ -79,6 +77,7 @@ public class BookingForm {
             }
         });
     }
+
     public JPanel getBookingPanel() {
         return bookingPanel;
     }
