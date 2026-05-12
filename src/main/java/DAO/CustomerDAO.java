@@ -16,7 +16,7 @@ public class CustomerDAO {
 
     public void addCustomer() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
-        String statement = "INSERT INTO `book`(`dni`, `name`, `surname`, `email`, `phonenumber`) VALUES (?,?,?,?,?)";
+        String statement = "INSERT INTO `customer`(`dni`, `name`, `surname`, `email`, `phonenumber`) VALUES (?,?,?,?,?)";
 
         try (PreparedStatement pstmt = sql.executeStatement(statement)) {
             pstmt.setString(1, this.customer.getDni());
@@ -26,16 +26,12 @@ public class CustomerDAO {
             pstmt.setString(5, this.customer.getPhoneNumber());
 
             pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
     }
 
     public void updateCustomer() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
-        String statement = "UPDATE `customer` SET `dni`='?',`name`='?',`surname`='?',`email`='?',`phonenumber`='?' WHERE dni = '?'";
+        String statement = "UPDATE `customer` SET `dni`=?,`name`=?,`surname`=?,`email`=?,`phonenumber`=? WHERE dni =?";
 
         try (PreparedStatement pstmt = sql.executeStatement(statement)) {
             pstmt.setString(1, this.customer.getDni());
@@ -43,47 +39,34 @@ public class CustomerDAO {
             pstmt.setString(3, this.customer.getSurname());
             pstmt.setString(4, this.customer.getEmail());
             pstmt.setString(5, this.customer.getPhoneNumber());
-            pstmt.setString(5, this.customer.getDni());
+            pstmt.setString(6, this.customer.getDni());
 
             pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
     }
+
 
     public void deleteCustomer() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
-        String statement = "DELETE FROM `customer` WHERE dni = '?'";
+        String statement = "DELETE FROM `customer` WHERE dni = ?";
 
         try (PreparedStatement pstmt = sql.executeStatement(statement)) {
             pstmt.setString(1, this.customer.getDni());
 
-            pstmt.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            pstmt.executeUpdate();
         }
     }
 
     public ResultSet searchCustomer() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
-        String statement = "SELECT * FROM customer WHERE dni = '?'";
-        ResultSet rs = null;
+        String statement = "SELECT * FROM customer WHERE dni = ?";
 
-        try (PreparedStatement pstmt = sql.executeStatement(statement)) {
-            pstmt.setString(1, this.customer.getDni());
+        PreparedStatement pstmt = sql.executeStatement(statement);
+        pstmt.setString(1, this.customer.getDni());
 
-            rs = pstmt.executeQuery();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return rs;
+        return pstmt.executeQuery();
 
     }
-
 }
 
 

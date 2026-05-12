@@ -1,6 +1,10 @@
 package frames;
 
+import DAO.CustomerDAO;
+import entities.Customer;
+
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class CustomerForm {
     private JPanel customerPanel;
@@ -41,14 +45,31 @@ public class CustomerForm {
 
                 JOptionPane.showMessageDialog(null, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-                // TODO: Aquí el turbo añadirá su código del CustomerDAO en el futuro
+                // 4. USAMOS EL DAO PARA GUARDAR EN LA BASE DE DATOS
 
-                // 4. Limpiamos las cajas de texto después de simular el guardado
-                txtDni.setText("");
-                txtName.setText("");
-                txtSurname.setText("");
-                txtEmail.setText("");
-                txtPhone.setText("");
+                Customer customer = new Customer(dni, name, surname, email, phone);
+                CustomerDAO customerDAO = new CustomerDAO(customer);
+
+                try {
+                    customerDAO.addCustomer();
+
+                    // Si llegamos aquí, es que se guardó bien
+                    JOptionPane.showMessageDialog(null, "¡Cliente guardado con éxito en la base de datos!");
+
+                    // 4. Limpiamos las cajas de texto después de simular el guardado
+                    txtDni.setText("");
+                    txtName.setText("");
+                    txtSurname.setText("");
+                    txtEmail.setText("");
+                    txtPhone.setText("");
+
+                } catch (SQLException ex) {
+                    // Si hay un error (DNI duplicado, conexión perdida...), saltará aquí
+                    JOptionPane.showMessageDialog(null,
+                            "Error al guardar en la base de datos: " + ex.getMessage(),
+                            "Error SQL",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
