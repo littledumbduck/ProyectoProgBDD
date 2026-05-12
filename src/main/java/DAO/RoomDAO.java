@@ -62,11 +62,11 @@ public class RoomDAO {
         }
     }
 
-    public ResultSet searchRoom() throws SQLException {
+    public ResultSet searchRoom(int roomId) throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "SELECT * FROM room WHERE roomNumber = ?";
         PreparedStatement pstmt = sql.executeStatement(statement);
-        pstmt.setInt(1, this.room.getRoomNumber());
+        pstmt.setInt(1, roomId);
         return pstmt.executeQuery();
     }
 

@@ -61,27 +61,27 @@ public class BookDAO {
         }
     }
 
-    public ResultSet searchBook() throws SQLException {
+    public ResultSet searchBook(int bookId) throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "SELECT * FROM book WHERE idBook = ?";
         PreparedStatement pstmt = sql.executeStatement(statement);
-        pstmt.setInt(1, this.book.getIdBook());
+        pstmt.setInt(1, bookId);
         return pstmt.executeQuery();
     }
 
-    public ResultSet searchBookByCustomer() throws SQLException {
+    public ResultSet searchBookByCustomer(String dni) throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "SELECT * FROM book WHERE customer_dni = ?";
         PreparedStatement pstmt = sql.executeStatement(statement);
-        pstmt.setString(1, this.book.getCustomerDni());
+        pstmt.setString(1, dni);
         return pstmt.executeQuery();
     }
 
-    public ResultSet searchBookByRoom() throws SQLException {
+    public ResultSet searchBookByRoom(int roomId) throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "SELECT * FROM book WHERE room_id = ?";
         PreparedStatement pstmt = sql.executeStatement(statement);
-        pstmt.setInt(1, this.book.getRoomId());
+        pstmt.setInt(1, roomId);
         return pstmt.executeQuery();
     }
 }

@@ -16,6 +16,14 @@ public class Customer {
         this.phoneNumber = telefono;
     }
 
+    public Customer() {
+        this.dni = "";
+        this.name = "";
+        this.surname = "";
+        this.email = "";
+        this.phoneNumber = "";
+    }
+
     // Getters + Setters
 
 
