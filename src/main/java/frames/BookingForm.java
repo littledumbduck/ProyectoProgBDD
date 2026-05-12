@@ -1,11 +1,15 @@
 package frames;
 
+import DAO.BookDAO;
+import entities.Book;
+
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class BookingForm {
     private JPanel bookingPanel;
     private JTable bookingTable;
-    private JTextField txtIdBook;
+    private JTextField txtBookId;
     private JTextField txtCustomerDni;
     private JTextField txtRoomId;
     private JTextField txtDateEntry;
@@ -18,10 +22,12 @@ public class BookingForm {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 // 1. Recogemos los datos
+                String bookId = txtBookId.getText();
                 String dni = txtCustomerDni.getText();
                 String roomId = txtRoomId.getText();
                 String dateEntry = txtDateEntry.getText();
                 String dateLeave = txtDateLeave.getText();
+                String purchaseStatus = txtPurchaseStatus.getText();
 
                 // 2. Validación básica
                 if (dni.isEmpty() || roomId.isEmpty() || dateEntry.isEmpty()) {
@@ -39,17 +45,40 @@ public class BookingForm {
 
                 JOptionPane.showMessageDialog(null, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-                // TODO: Aquí irá el código del BookDAO para guardar en la BD
+                // 4. USAMOS EL DAO PARA GUARDAR EN LA BASE DE DATOS
 
-                // 4. Limpiar cajas
-                txtCustomerDni.setText("");
-                txtRoomId.setText("");
-                txtDateEntry.setText("");
-                txtDateLeave.setText("");
+                Book booking = new Book(bookId, dni, roomId, dateEntry, dateLeave, purchaseStatus);
+                BookDAO bookingDAO = new BookDAO(booking);
+
+                try {
+                    int roomId = Integer.parseInt(roomIdStr);
+
+                    bookingDAO.addBook();
+
+                    JOptionPane.showMessageDialog(null, "¡Reserva guardada con éxito en la base de datos!");
+
+                    // 5. Limpiamos las cajas
+                    txtBookId.setText("");
+                    txtCustomerDni.setText("");
+                    txtRoomId.setText("");
+                    txtDateEntry.setText("");
+                    txtDateLeave.setText("");
+                    txtPurchaseStatus.setText("");
+
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null,
+                            "El número de habitación debe ser un número válido.",
+                            "Error de formato",
+                            JOptionPane.ERROR_MESSAGE);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null,
+                            "Error al guardar en la base de datos: " + ex.getMessage(),
+                            "Error SQL",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
-
     public JPanel getBookingPanel() {
         return bookingPanel;
     }
