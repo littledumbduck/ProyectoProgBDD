@@ -35,6 +35,28 @@ public class BookDAO {
 
     }
 
+    public void updateBook() throws SQLException {
+        ConexionMySQL db = new ConexionMySQL();
+        String sql = "UPDATE `book` SET `idBook`='?',`customer_dni`='?',`room_id`='?',`dateEntry`='?'," +
+                "`dateLeave`='?',`purchaseStatus`='?' WHERE idBook = ?";
+
+        try (PreparedStatement pstmt = db.executeStatement(sql)) {
+            pstmt.setInt(1, this.book.getIdBook());
+            pstmt.setString(2, this.book.getCustomerDni());
+            pstmt.setInt(3, this.book.getRoomId());
+            pstmt.setString(4, this.book.getDateEntry());
+            pstmt.setString(5, this.book.getDateLeave());
+            pstmt.setString(6, String.valueOf(this.book.getPurchaseStatus()));
+            pstmt.setInt(7, this.book.getIdBook());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void deleteBook() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "DELETE FROM `book` WHERE idBook = ?";

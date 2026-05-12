@@ -34,6 +34,27 @@ public class RoomDAO {
 
     }
 
+    public void updateRoom() throws SQLException {
+        ConexionMySQL sql = new ConexionMySQL();
+        String statement = "UPDATE `room` SET `roomNumber`='?',`roomfloor`='?',`roomType`='?'," +
+                "`price`='?',`status`='?' WHERE roomNumber = ?";
+
+        try (PreparedStatement pstmt = sql.executeStatement(statement)) {
+            pstmt.setInt(1, this.room.getRoomNumber());
+            pstmt.setInt(2, this.room.getRoomFloor());
+            pstmt.setString(3, this.room.getRoomType());
+            pstmt.setDouble(4, this.room.getPrice());
+            pstmt.setString(5, String.valueOf(this.room.getStatus()));
+            pstmt.setInt(6, this.room.getRoomNumber());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void deleteRoom() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "DELETE FROM `room` WHERE roomNumber = ?";
