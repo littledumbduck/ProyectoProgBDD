@@ -14,6 +14,9 @@ public class BookDAO {
         this.book = book;
     }
 
+    public BookDAO (){
+    }
+
     public void addBook() throws SQLException {
         ConexionMySQL db = new ConexionMySQL();
         String sql = "INSERT INTO `book`(`idBook`, `customer_dni`, `room_id`, `dateEntry`, `dateLeave`, `purchaseStatus`) " +
@@ -85,9 +88,10 @@ public class BookDAO {
         return pstmt.executeQuery();
     }
 
-    public ResultSet getAllBooks(String dni) throws SQLException {
+    public ResultSet getAllBooks() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "SELECT * FROM book";
-        return (ResultSet) sql.executeStatement(statement);
+        java.sql.PreparedStatement pstmt = sql.executeStatement(statement);
+        return pstmt.executeQuery();
     }
 }

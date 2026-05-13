@@ -6,6 +6,9 @@ import entities.Room;
 import javax.swing.*;
 import java.sql.SQLException;
 
+import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+
 public class RoomForm {
     private JPanel roomPanel;
     private JTable roomTable;
@@ -17,6 +20,9 @@ public class RoomForm {
     private JButton btnAddRoom;
 
 public RoomForm() {
+
+    cargarTabla();
+
     btnAddRoom.addActionListener(new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -108,6 +114,34 @@ public RoomForm() {
         }
     });
 }
+
+    // MÉTODO PARA LLENAR LA TABLA DE RESERVAS
+
+    public void cargarTabla() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Nº");
+        modelo.addColumn("Planta");
+        modelo.addColumn("Tipo");
+        modelo.addColumn("Precio");
+        modelo.addColumn("Estado");
+
+        RoomDAO dao = new RoomDAO();
+        try {
+            ResultSet rs = dao.getAllRooms();
+            while (rs.next()) {
+                Object[] fila = new Object[5];
+                fila[0] = rs.getInt("roomNumber");
+                fila[1] = rs.getInt("roomfloor");
+                fila[2] = rs.getString("roomType");
+                fila[3] = rs.getDouble("price");
+                fila[4] = rs.getString("status");
+                modelo.addRow(fila);
+            }
+            roomTable.setModel(modelo);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al cargar habitaciones: " + ex.getMessage());
+        }
+    }
 
 public JPanel getRoomPanel() {
     return roomPanel;

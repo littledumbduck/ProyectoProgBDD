@@ -52,7 +52,7 @@ public class Main {
                 // Le metemos el panel que acabas de diseñar
                 customerDialog.setContentPane(form.getCustomerPanel());
                 // Ajustamos el tamaño para que no se vea minúscula
-                customerDialog.setSize(600, 400);
+                customerDialog.pack();
 
                 // Centramos la ventanita respecto a la ventana principal
                 customerDialog.setLocationRelativeTo(frame);
@@ -68,7 +68,7 @@ public class Main {
                 JDialog roomDialog = new JDialog(frame, "Gestión de Habitaciones", true);
                 RoomForm form = new RoomForm();
                 roomDialog.setContentPane(form.getRoomPanel());
-                roomDialog.setSize(600, 400);
+                roomDialog.pack();
                 roomDialog.setLocationRelativeTo(frame);
                 roomDialog.setVisible(true);
             }
@@ -81,7 +81,7 @@ public class Main {
                 BookingForm form = new BookingForm();
 
                 bookingDialog.setContentPane(form.getBookingPanel());
-                bookingDialog.setSize(600, 400);
+                bookingDialog.pack();
                 bookingDialog.setLocationRelativeTo(frame);
                 bookingDialog.setVisible(true);
             }
@@ -89,7 +89,7 @@ public class Main {
 
         // 4. Configuración final de la ventana
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600); // Tamaño inicial
+        frame.pack(); // Tamaño inicial
         frame.setLocationRelativeTo(null); // Para que aparezca centrada en la pantalla
         frame.setVisible(true);
     }
