@@ -95,4 +95,9 @@ public class Room {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Habitación " + roomNumber + " - " + roomType + " (" + price + "€)";
+    }
 }
