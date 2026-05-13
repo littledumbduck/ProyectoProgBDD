@@ -14,6 +14,9 @@ public class RoomDAO {
         this.room = room;
     }
 
+    public RoomDAO(){
+    }
+
     public void addRoom() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "INSERT INTO `room`(`roomNumber`, `roomfloor`, `roomType`, `price`, `status`) " +
@@ -70,9 +73,9 @@ public class RoomDAO {
         return pstmt.executeQuery();
     }
 
-    public ResultSet getAllRooms(String dni) throws SQLException {
+    public ResultSet getAllRooms() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "SELECT * FROM room";
-        return (ResultSet) sql.executeStatement(statement);
-    }
+        java.sql.PreparedStatement pstmt = sql.executeStatement(statement);
+        return pstmt.executeQuery();    }
 }

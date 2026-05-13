@@ -13,6 +13,9 @@ public class CustomerDAO {
         this.customer = customer;
     }
 
+    public CustomerDAO() {
+    }
+
     public void addCustomer() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "INSERT INTO `customer`(`dni`, `name`, `surname`, `email`, `phonenumber`) VALUES (?,?,?,?,?)";
@@ -66,10 +69,11 @@ public class CustomerDAO {
         return pstmt.executeQuery();
     }
 
-    public ResultSet getAllCustomers(String dni) throws SQLException {
+    public ResultSet getAllCustomers() throws SQLException {
         ConexionMySQL sql = new ConexionMySQL();
         String statement = "SELECT * FROM customer";
-        return (ResultSet) sql.executeStatement(statement);
+        PreparedStatement pstmt = sql.executeStatement(statement);
+        return pstmt.executeQuery();
     }
 
 

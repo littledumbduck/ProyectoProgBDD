@@ -6,6 +6,9 @@ import entities.Book;
 import javax.swing.*;
 import java.sql.SQLException;
 
+import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+
 public class BookingForm {
     private JPanel bookingPanel;
     private JTable bookingTable;
@@ -18,6 +21,9 @@ public class BookingForm {
     private JButton btnAddBooking;
 
     public BookingForm() {
+        // Cargamos la tabla al abrir la ventana
+        cargarTabla();
+
         btnAddBooking.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -108,6 +114,35 @@ public class BookingForm {
                 }
             }
         });
+    }
+
+    // MÉTODO PARA LLENAR LA TABLA DE RESERVAS
+    public void cargarTabla() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("DNI Cliente");
+        modelo.addColumn("Habitación");
+        modelo.addColumn("Entrada");
+        modelo.addColumn("Salida");
+        modelo.addColumn("Estado");
+
+        BookDAO dao = new BookDAO();
+        try {
+            ResultSet rs = dao.getAllBooks();
+            while (rs.next()) {
+                Object[] fila = new Object[6];
+                fila[0] = rs.getInt("idBook");
+                fila[1] = rs.getString("customer_dni");
+                fila[2] = rs.getInt("room_id");
+                fila[3] = rs.getString("dateEntry");
+                fila[4] = rs.getString("dateLeave");
+                fila[5] = rs.getString("purchaseStatus");
+                modelo.addRow(fila);
+            }
+            bookingTable.setModel(modelo);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al cargar reservas: " + ex.getMessage());
+        }
     }
 
     public JPanel getBookingPanel() {
