@@ -1,6 +1,10 @@
 package frames;
 
+import DAO.RoomDAO;
+import entities.Room;
+
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class RoomForm {
     private JPanel roomPanel;
@@ -39,9 +43,40 @@ public class RoomForm {
 
                 JOptionPane.showMessageDialog(null, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-                // TODO: Aquí irá el código del RoomDAO de alturbo
+                // 4. USAMOS EL DAO PARA GUARDAR EN LA BASE DE DATOS
 
-                // 4. Limpiar cajas
+                // Creamos los objetos haciendo el parseo de tus variables directamente
+                Room room = new Room(
+                        Integer.parseInt(roomNumber),
+                        Integer.parseInt(floor),
+                        type,
+                        Double.parseDouble(price),
+                        status.charAt(0)
+                );
+
+                RoomDAO roomDAO = new RoomDAO(room);
+
+                // 5. TRY EXCLUSIVO PARA SQL
+                try {
+                    roomDAO.addRoom();
+
+                    JOptionPane.showMessageDialog(null, "¡Habitación guardada con éxito en la base de datos!");
+
+                    // 6. Limpiar cajas
+                    txtRoomNumber.setText("");
+                    txtRoomFloor.setText("");
+                    txtRoomType.setText("");
+                    txtPrice.setText("");
+                    txtRoomStatus.setText("");
+
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null,
+                            "Error al guardar en la base de datos: " + ex.getMessage(),
+                            "Error SQL",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
+                // 5. Limpiar cajas
                 txtRoomNumber.setText("");
                 txtRoomFloor.setText("");
                 txtRoomType.setText("");
