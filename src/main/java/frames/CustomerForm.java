@@ -91,6 +91,9 @@ public class CustomerForm {
                     txtPhone.setText("");
                     txtDni.setEnabled(true);
 
+                    // --- REHABILITAR CLAVE PRIMARIA ---
+                    txtDni.setEnabled(true);
+
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error al modificar: " + ex.getMessage(), "Error SQL", JOptionPane.ERROR_MESSAGE);
                 }

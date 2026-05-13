@@ -19,10 +19,63 @@ public class BookingForm {
     private JTextField txtDateLeave;
     private JTextField txtPurchaseStatus;
     private JButton btnAddBooking;
+    private JButton btnUpdateBooking;
 
     public BookingForm() {
         // Cargamos la tabla al abrir la ventana
         cargarTabla();
+
+        // --- EVENTO PARA SELECCIONAR ---
+        bookingTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int fila = bookingTable.getSelectedRow();
+                if (fila >= 0) {
+                    txtBookId.setText(bookingTable.getValueAt(fila, 0).toString());
+                    txtCustomerDni.setText(bookingTable.getValueAt(fila, 1).toString());
+                    txtRoomId.setText(bookingTable.getValueAt(fila, 2).toString());
+                    txtDateEntry.setText(bookingTable.getValueAt(fila, 3).toString());
+                    txtDateLeave.setText(bookingTable.getValueAt(fila, 4).toString());
+                    txtPurchaseStatus.setText(bookingTable.getValueAt(fila, 5).toString());
+                    txtBookId.setEnabled(false);
+                }
+            }
+        });
+
+        // --- LÓGICA DEL BOTÓN MODIFICAR ---
+        btnUpdateBooking.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                try {
+                    Book book = new Book(
+                            Integer.parseInt(txtBookId.getText()),
+                            txtCustomerDni.getText(),
+                            Integer.parseInt(txtRoomId.getText()),
+                            txtDateEntry.getText(),
+                            txtDateLeave.getText(),
+                            txtPurchaseStatus.getText().charAt(0)
+                    );
+                    BookDAO dao = new BookDAO(book);
+                    dao.updateBook();
+                    JOptionPane.showMessageDialog(null, "Reserva modificada correctamente.");
+                    cargarTabla();
+
+                    // --- LIMPIEZA DE CAJAS ---
+                    txtBookId.setText("");
+                    txtCustomerDni.setText("");
+                    txtRoomId.setText("");
+                    txtDateEntry.setText("");
+                    txtDateLeave.setText("");
+                    txtPurchaseStatus.setText("");
+
+                    // --- REHABILITAR CLAVE PRIMARIA ---
+                    txtBookId.setEnabled(true);
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar reserva.");
+                }
+            }
+        });
 
         btnAddBooking.addActionListener(new java.awt.event.ActionListener() {
             @Override
