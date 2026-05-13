@@ -28,13 +28,37 @@ public class CustomerForm {
                 String email = txtEmail.getText();
                 String phone = txtPhone.getText();
 
-                // 2. Validación básica: comprobar que los campos clave no estén vacíos
+                // 2. VALIDACIÓN AVANZADA (Acumulando errores)
+                StringBuilder errores = new StringBuilder(); // Aquí apuntaremos todos los fallos
+
+                // A) Campos obligatorios
                 if (dni.isEmpty() || name.isEmpty() || surname.isEmpty()) {
+                    errores.append("- Faltan campos obligatorios (DNI, Nombre o Apellidos).\n");
+                }
+
+                // B) DNI (Solo lo comprobamos si ha escrito algo, para no repetir el error de arriba)
+                if (!dni.isEmpty() && !dni.matches("^[0-9]{8}[a-zA-Z]$")) {
+                    errores.append("- El DNI debe tener 8 números y 1 letra (Ej: 12345678X).\n");
+                }
+
+                // C) Teléfono (Opcional, pero si hay texto, debe ser válido)
+                if (!phone.isEmpty() && !phone.matches("^[0-9]{9}$")) {
+                    errores.append("- El teléfono debe contener exactamente 9 números.\n");
+                }
+
+                // D) Email (Opcional, pero si hay texto, debe tener formato correo)
+                if (!email.isEmpty() && !email.matches("^[A-Za-z0-9+_.-]+@(.+)\\.(.+)$")) {
+                    errores.append("- El correo electrónico no tiene un formato válido.\n");
+                }
+
+                // E) EL JUEZ FINAL: ¿Hay algún error anotado?
+                if (errores.length() > 0) {
+                    // Si hay errores, mostramos la lista completa y cortamos la ejecución
                     JOptionPane.showMessageDialog(null,
-                            "Por favor, rellena al menos DNI, Nombre y Apellidos.",
-                            "Campos vacíos",
+                            "Por favor, corrige los siguientes datos antes de guardar:\n\n" + errores.toString(),
+                            "Errores en el formulario",
                             JOptionPane.WARNING_MESSAGE);
-                    return; // Cortamos la ejecución aquí para que no siga intentando guardar
+                    return;
                 }
 
                 // 3. Mensaje de prueba para confirmar que la interfaz funciona

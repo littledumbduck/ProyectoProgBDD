@@ -16,65 +16,81 @@ public class RoomForm {
     private JTextField txtRoomStatus;
     private JButton btnAddRoom;
 
-    // --- CONSTRUCTOR CON LA LÓGICA DEL BOTÓN ---
-    public RoomForm() {
-        btnAddRoom.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                // 1. Recoger datos
-                String roomNumber = txtRoomNumber.getText();
-                String floor = txtRoomFloor.getText();
-                String type = txtRoomType.getText();
-                String price = txtPrice.getText();
-                String status = txtRoomStatus.getText();
+public RoomForm() {
+    btnAddRoom.addActionListener(new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(java.awt.event.ActionEvent e) {
+            // 1. Recoger datos
+            String roomNumber = txtRoomNumber.getText();
+            String floor = txtRoomFloor.getText();
+            String type = txtRoomType.getText();
+            String price = txtPrice.getText();
+            String status = txtRoomStatus.getText();
 
-                // 2. Validación básica
-                if (roomNumber.isEmpty() || type.isEmpty() || price.isEmpty()) {
-                    JOptionPane.showMessageDialog(null,
-                            "Por favor, rellena al menos el Número, Tipo y Precio.",
-                            "Campos vacíos",
-                            JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
+            // 2. VALIDACIÓN AVANZADA (Acumulando errores)
+            StringBuilder errores = new StringBuilder();
 
-                // 3. Mensaje de éxito
-                String mensaje = "¡Habitación lista para guardar!\n" +
-                        "Número: " + roomNumber + " (" + type + ")";
+            // A) Obligatorios
+            if (floor.isEmpty() || type.isEmpty() || price.isEmpty()) {
+                errores.append("- Faltan campos obligatorios (Planta, Tipo o Precio).\n");
+            }
 
-                JOptionPane.showMessageDialog(null, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            // B) Formato Numérico (Habitación y Planta)
+            if (!roomNumber.isEmpty() && !roomNumber.matches("^[0-9]+$")) {
+                errores.append("- El número de habitación debe ser un valor numérico.\n");
+            }
+            if (!floor.isEmpty() && !floor.matches("^[0-9]+$")) {
+                errores.append("- La planta debe ser un valor numérico.\n");
+            }
 
-                // 4. USAMOS EL DAO PARA GUARDAR EN LA BASE DE DATOS
+            // C) Formato de Precio (Admite decimales con punto)
+            if (!price.isEmpty() && !price.matches("^[0-9]+(\\.[0-9]{1,2})?$")) {
+                errores.append("- El precio debe ser un número (puede usar un punto, ej: 45.50).\n");
+            }
 
-                // Creamos los objetos haciendo el parseo de tus variables directamente
-                Room room = new Room(
-                        Integer.parseInt(roomNumber),
-                        Integer.parseInt(floor),
-                        type,
-                        Double.parseDouble(price),
-                        status.charAt(0)
-                );
+            // D) Formato de Tipo y Estado (Letras individuales)
+            if (!type.isEmpty() && type.length() > 1) {
+                errores.append("- El tipo de habitación debe ser una sola letra (Ej: S o D).\n");
+            }
+            if (!status.isEmpty() && status.length() > 1) {
+                errores.append("- El estado de la habitación debe ser una sola letra.\n");
+            }
 
-                RoomDAO roomDAO = new RoomDAO(room);
+            // E) EL JUEZ FINAL
+            if (errores.length() > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Por favor, corrige los siguientes datos antes de guardar:\n\n" + errores.toString(),
+                        "Errores en el formulario",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-                // 5. TRY EXCLUSIVO PARA SQL
-                try {
-                    roomDAO.addRoom();
+            // 3. PREPARAMOS VARIABLES
+            int numParsed = 0;
+            char statusParsed = 'D'; // Si dejan el estado vacío, por defecto es Disponible ('D')
 
-                    JOptionPane.showMessageDialog(null, "¡Habitación guardada con éxito en la base de datos!");
+            if (!roomNumber.isEmpty()) {
+                numParsed = Integer.parseInt(roomNumber);
+            }
 
-                    // 6. Limpiar cajas
-                    txtRoomNumber.setText("");
-                    txtRoomFloor.setText("");
-                    txtRoomType.setText("");
-                    txtPrice.setText("");
-                    txtRoomStatus.setText("");
+            int floorParsed = Integer.parseInt(floor);
+            double priceParsed = Double.parseDouble(price);
 
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null,
-                            "Error al guardar en la base de datos: " + ex.getMessage(),
-                            "Error SQL",
-                            JOptionPane.ERROR_MESSAGE);
-                }
+            // Pasamos a mayúscula para que en la BD quede uniforme
+            String typeParsed = type.toUpperCase();
+
+            if (!status.isEmpty()) {
+                statusParsed = status.toUpperCase().charAt(0);
+            }
+
+            // 4. USAMOS EL DAO PARA GUARDAR EN LA BASE DE DATOS
+            Room room = new Room(numParsed, floorParsed, typeParsed, priceParsed, statusParsed);
+            RoomDAO roomDAO = new RoomDAO(room);
+
+            try {
+                roomDAO.addRoom();
+
+                JOptionPane.showMessageDialog(null, "¡Habitación guardada con éxito en la base de datos!");
 
                 // 5. Limpiar cajas
                 txtRoomNumber.setText("");
@@ -82,12 +98,18 @@ public class RoomForm {
                 txtRoomType.setText("");
                 txtPrice.setText("");
                 txtRoomStatus.setText("");
-            }
-        });
-    }
 
-    // --- GETTER PARA EL MAIN ---
-    public JPanel getRoomPanel() {
-        return roomPanel;
-    }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null,
+                        "Error al guardar en la base de datos: " + ex.getMessage(),
+                        "Error SQL",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    });
+}
+
+public JPanel getRoomPanel() {
+    return roomPanel;
+}
 }

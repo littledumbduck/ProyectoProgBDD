@@ -29,33 +29,65 @@ public class BookingForm {
                 String dateLeave = txtDateLeave.getText();
                 String purchaseStatus = txtPurchaseStatus.getText();
 
-                // 2. Validación básica
+                // 2. VALIDACIÓN AVANZADA (Acumulando errores)
+                StringBuilder errores = new StringBuilder();
+
+                // A) Obligatorios
                 if (dni.isEmpty() || roomId.isEmpty() || dateEntry.isEmpty()) {
+                    errores.append("- Faltan campos obligatorios (DNI, Habitación o Fecha de Entrada).\n");
+                }
+
+                // B) Formato del DNI del Cliente (Clave foránea)
+                if (!dni.isEmpty() && !dni.matches("^[0-9]{8}[a-zA-Z]$")) {
+                    errores.append("- El DNI del cliente debe tener 8 números y 1 letra.\n");
+                }
+
+                // C) Formato de Números (Habitación y BookID)
+                if (!roomId.isEmpty() && !roomId.matches("^[0-9]+$")) {
+                    errores.append("- El número de habitación debe contener solo números.\n");
+                }
+                if (!bookId.isEmpty() && !bookId.matches("^[0-9]+$")) {
+                    errores.append("- El ID de la reserva (si se rellena) debe ser numérico.\n");
+                }
+
+                // D) Formato de Fechas para MySQL (AAAA-MM-DD)
+                String regexFecha = "^\\d{4}-\\d{2}-\\d{2}$";
+                if (!dateEntry.isEmpty() && !dateEntry.matches(regexFecha)) {
+                    errores.append("- La fecha de entrada debe tener formato AAAA-MM-DD (Ej: 2026-05-13).\n");
+                }
+                if (!dateLeave.isEmpty() && !dateLeave.matches(regexFecha)) {
+                    errores.append("- La fecha de salida debe tener formato AAAA-MM-DD.\n");
+                }
+
+                // E) EL JUEZ FINAL: ¿Hay errores?
+                if (errores.length() > 0) {
                     JOptionPane.showMessageDialog(null,
-                            "Por favor, rellena al menos DNI, Habitación y Fecha de Entrada.",
-                            "Campos vacíos",
+                            "Por favor, corrige los siguientes datos antes de guardar:\n\n" + errores.toString(),
+                            "Errores en el formulario",
                             JOptionPane.WARNING_MESSAGE);
                     return;
                 }
 
-                // 3. Mensaje de éxito temporal
-                String mensaje = "¡Reserva lista para guardar!\n" +
-                        "DNI Cliente: " + dni + "\n" +
-                        "ID Habitación: " + roomId;
-
-                JOptionPane.showMessageDialog(null, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-                // 4. USAMOS EL DAO PARA GUARDAR EN LA BASE DE DATOS
-
+                // 3. PREPARAMOS VARIABLES
                 int idParsed = 0;
                 int roomParsed = 0;
                 char statusParsed = ' ';
 
-                Book booking = new Book(Integer.parseInt(bookId), dni, Integer.parseInt(roomId), dateEntry, dateLeave, purchaseStatus.toLowerCase().charAt(0));
+                // Como el Regex ya nos ha asegurado que son números limpios, los parseInt no fallarán
+                if (!bookId.isEmpty()) {
+                    idParsed = Integer.parseInt(bookId);
+                }
+                roomParsed = Integer.parseInt(roomId);
+
+                if (!purchaseStatus.isEmpty()) {
+                    statusParsed = purchaseStatus.toUpperCase().charAt(0);
+                }
+
+                // 4. USAMOS EL DAO PARA GUARDAR EN LA BASE DE DATOS
+                Book booking = new Book(idParsed, dni, roomParsed, dateEntry, dateLeave, statusParsed);
                 BookDAO bookingDAO = new BookDAO(booking);
 
                 try {
-
                     bookingDAO.addBook();
 
                     JOptionPane.showMessageDialog(null, "¡Reserva guardada con éxito en la base de datos!");
