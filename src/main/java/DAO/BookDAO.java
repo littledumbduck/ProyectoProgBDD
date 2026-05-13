@@ -84,4 +84,10 @@ public class BookDAO {
         pstmt.setInt(1, roomId);
         return pstmt.executeQuery();
     }
+
+    public ResultSet getAllBooks(String dni) throws SQLException {
+        ConexionMySQL sql = new ConexionMySQL();
+        String statement = "SELECT * FROM book";
+        return (ResultSet) sql.executeStatement(statement);
+    }
 }

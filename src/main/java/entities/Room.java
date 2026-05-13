@@ -29,6 +29,14 @@ public class Room {
         this.status = 'd';
     }
 
+    public Room() {
+        this.roomNumber = 0;
+        this.roomFloor = 0;
+        this.roomType = "";
+        this.price = 0;
+        this.status = 'd';
+    }
+
     // Getters/Setters
     public int getRoomNumber() {
         return roomNumber;

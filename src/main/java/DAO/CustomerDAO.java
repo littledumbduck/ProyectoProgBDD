@@ -64,7 +64,12 @@ public class CustomerDAO {
         pstmt.setString(1, dni);
 
         return pstmt.executeQuery();
+    }
 
+    public ResultSet getAllCustomers(String dni) throws SQLException {
+        ConexionMySQL sql = new ConexionMySQL();
+        String statement = "SELECT * FROM customer";
+        return (ResultSet) sql.executeStatement(statement);
     }
 
 

@@ -70,4 +70,9 @@ public class RoomDAO {
         return pstmt.executeQuery();
     }
 
+    public ResultSet getAllRooms(String dni) throws SQLException {
+        ConexionMySQL sql = new ConexionMySQL();
+        String statement = "SELECT * FROM room";
+        return (ResultSet) sql.executeStatement(statement);
+    }
 }

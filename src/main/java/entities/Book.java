@@ -22,6 +22,15 @@ public class Book {
         this.purchaseStatus = purchaseStatus;
     }
 
+    public Book() {
+        this.idBook = 0;
+        this.customerDni = "";
+        this.roomId = 0;
+        this.dateEntry = "";
+        this.dateLeave = "";
+        this.purchaseStatus = 'd';
+    }
+
     // Getters/Setters
     public int getIdBook() {
         return idBook;
