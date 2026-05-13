@@ -18,10 +18,60 @@ public class RoomForm {
     private JTextField txtRoomType;
     private JTextField txtRoomStatus;
     private JButton btnAddRoom;
+    private JButton btnUpdateRoom;
 
-public RoomForm() {
+    public RoomForm() {
 
     cargarTabla();
+
+        // --- EVENTO PARA SELECCIONAR DE LA TABLA ---
+        roomTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int fila = roomTable.getSelectedRow();
+                if (fila >= 0) {
+                    txtRoomNumber.setText(roomTable.getValueAt(fila, 0).toString());
+                    txtRoomFloor.setText(roomTable.getValueAt(fila, 1).toString());
+                    txtRoomType.setText(roomTable.getValueAt(fila, 2).toString());
+                    txtPrice.setText(roomTable.getValueAt(fila, 3).toString());
+                    txtRoomStatus.setText(roomTable.getValueAt(fila, 4).toString());
+                    txtRoomNumber.setEnabled(false); // Bloqueamos el PK
+                }
+            }
+        });
+
+        // --- LÓGICA DEL BOTÓN MODIFICAR ---
+        btnUpdateRoom.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                try {
+                    Room room = new Room(
+                            Integer.parseInt(txtRoomNumber.getText()),
+                            Integer.parseInt(txtRoomFloor.getText()),
+                            txtRoomType.getText(),
+                            Double.parseDouble(txtPrice.getText()),
+                            txtRoomStatus.getText().charAt(0)
+                    );
+                    RoomDAO dao = new RoomDAO(room);
+                    dao.updateRoom();
+                    JOptionPane.showMessageDialog(null, "Habitación actualizada.");
+                    cargarTabla(); // Recuerda tener este método creado como en Clientes
+
+                    // --- LIMPIEZA DE CAJAS ---
+                    txtRoomNumber.setText("");
+                    txtRoomFloor.setText("");
+                    txtRoomType.setText("");
+                    txtPrice.setText("");
+                    txtRoomStatus.setText("");
+
+                    // --- REHABILITAR CLAVE PRIMARIA ---
+                    txtRoomNumber.setEnabled(true);
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+                }
+            }
+        });
 
     btnAddRoom.addActionListener(new java.awt.event.ActionListener() {
         @Override
@@ -115,7 +165,7 @@ public RoomForm() {
     });
 }
 
-    // MÉTODO PARA LLENAR LA TABLA DE RESERVAS
+    // MÉTODO PARA LLENAR LA TABLA DE HABITACIONES
 
     public void cargarTabla() {
         DefaultTableModel modelo = new DefaultTableModel();
