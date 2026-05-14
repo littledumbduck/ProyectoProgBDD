@@ -27,7 +27,7 @@ public class RoomDAO {
             pstmt.setInt(2, this.room.getRoomFloor());
             pstmt.setString(3, this.room.getRoomType());
             pstmt.setDouble(4, this.room.getPrice());
-            pstmt.setString(5, String.valueOf(this.room.getStatus()));
+            pstmt.setString(5, String.valueOf(this.room.getStatus()).toLowerCase());
 
             pstmt.executeUpdate();
         }
@@ -44,7 +44,7 @@ public class RoomDAO {
             pstmt.setInt(2, this.room.getRoomFloor());
             pstmt.setString(3, this.room.getRoomType());
             pstmt.setDouble(4, this.room.getPrice());
-            pstmt.setString(5, String.valueOf(this.room.getStatus()));
+            pstmt.setString(5, String.valueOf(this.room.getStatus()).toLowerCase());
             pstmt.setInt(6, this.room.getRoomNumber());
 
             pstmt.executeUpdate();
