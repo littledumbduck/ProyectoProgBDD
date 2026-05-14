@@ -19,6 +19,7 @@ public class CustomerForm {
     private JTextField txtEmail;
     private JTextField txtPhone;
     private JButton btnUpdateCustomer;
+    private JButton btnDeleteCustomer;
 
     // --- AQUÍ EMPIEZA EL CONSTRUCTOR QUE AÑADE LA LÓGICA AL BOTÓN ---
     public CustomerForm() {
@@ -96,6 +97,44 @@ public class CustomerForm {
 
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error al modificar: " + ex.getMessage(), "Error SQL", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        // LÓGICA DEL BOTÓN ELIMINAR
+        btnDeleteCustomer.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                String dni = txtDni.getText();
+
+                if (dni.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Selecciona un cliente para eliminar.");
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(null,
+                        "¿Seguro que quieres eliminar al cliente con DNI " + dni + "?",
+                        "Confirmar", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    // Creamos objeto solo con el DNI para borrar
+                    Customer customer = new Customer(dni, "", "", "", "");
+                    CustomerDAO dao = new CustomerDAO(customer);
+                    try {
+                        dao.deleteCustomer();
+                        JOptionPane.showMessageDialog(null, "Cliente eliminado.");
+                        cargarTabla();
+
+                        // Limpieza
+                        txtDni.setText("");
+                        txtName.setText("");
+                        txtSurname.setText("");
+                        txtEmail.setText("");
+                        txtPhone.setText("");
+                        txtDni.setEnabled(true);
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Error al eliminar: " + ex.getMessage());
+                    }
                 }
             }
         });

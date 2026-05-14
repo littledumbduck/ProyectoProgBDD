@@ -20,6 +20,7 @@ public class BookingForm {
     private JTextField txtPurchaseStatus;
     private JButton btnAddBooking;
     private JButton btnUpdateBooking;
+    private JButton btnDeleteBooking;
 
     public BookingForm() {
         // Cargamos la tabla al abrir la ventana
@@ -73,6 +74,48 @@ public class BookingForm {
 
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Error al actualizar reserva.");
+                }
+            }
+        });
+
+        // --- LÓGICA DEL BOTÓN ELIMINAR RESERVA ---
+        btnDeleteBooking.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                String bookId = txtBookId.getText();
+
+                if (bookId.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Selecciona una reserva para eliminar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(null,
+                        "¿Eliminar la reserva con ID " + bookId + "?", "Confirmar",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        // Creamos objeto solo con la PK necesaria para deleteBook()
+                        Book book = new Book(Integer.parseInt(bookId), "", 0, "", "", ' ');
+                        BookDAO dao = new BookDAO(book);
+
+                        dao.deleteBook();
+                        JOptionPane.showMessageDialog(null, "Reserva eliminada con éxito.");
+
+                        cargarTabla();
+
+                        // Limpieza corregida con tus variables
+                        txtBookId.setText("");
+                        txtCustomerDni.setText("");
+                        txtRoomId.setText("");
+                        txtDateEntry.setText("");
+                        txtDateLeave.setText("");
+                        txtPurchaseStatus.setText("");
+                        txtBookId.setEnabled(true);
+
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Error SQL: " + ex.getMessage());
+                    }
                 }
             }
         });
