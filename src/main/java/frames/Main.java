@@ -87,6 +87,19 @@ public class Main {
             }
         });
 
+        itemCheckin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog checkInDialog = new JDialog(frame, "Realizar Check-In", true);
+                CheckInForm form = new CheckInForm();
+                // Asegúrate de que CheckInForm tenga un método getRootPanel() o similar
+                checkInDialog.setContentPane(form.getCheckInPanel());
+                checkInDialog.pack();
+                checkInDialog.setLocationRelativeTo(frame);
+                checkInDialog.setVisible(true);
+            }
+        });
+
         // 4. Configuración final de la ventana
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack(); // Tamaño inicial

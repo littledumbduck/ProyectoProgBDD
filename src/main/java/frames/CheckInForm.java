@@ -17,8 +17,21 @@ public class CheckInForm {
     private JList list1;
     private JList list2;
     private JButton realizarCheckInButton;
+    private JPanel checkInPanel;
+
 
     public CheckInForm() {
+        // 1. Cargamos los datos en las JList al iniciar
+        loadLists();
+
+        // 2. Evento del botón (Ya lo tienes parcialmente planteado)
+        realizarCheckInButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ejecutarCheckIn();
+            }
+        });
+
         realizarCheckInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,7 +102,7 @@ public class CheckInForm {
             ResultSet rsR = rDAO.getAllRooms();
 
             while (rsR.next()) {
-                if (rsR.getString("status").charAt(0) == 'd') {
+                if (rsR.getString("status").charAt(0) == 'D') {
                     modeloHabitaciones.addElement(new Room(
                             rsR.getInt("roomNumber"), rsR.getInt("roomfloor"),
                             rsR.getString("roomType"), rsR.getDouble("price"),
@@ -101,5 +114,46 @@ public class CheckInForm {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void ejecutarCheckIn() {
+        Customer cliente = (Customer) list1.getSelectedValue();
+        Room habitacion = (Room) list2.getSelectedValue();
+
+        if (cliente == null || habitacion == null) {
+            JOptionPane.showMessageDialog(null, "Selecciona un cliente y una habitación.");
+            return;
+        }
+
+        try {
+            // Creamos la entidad Book (Reserva)
+            // Nota: Ajusta las fechas según necesites o usa un selector de fecha
+            Book nuevaReserva = new Book();
+            nuevaReserva.setCustomerDni(cliente.getDni());
+            nuevaReserva.setRoomId(habitacion.getRoomNumber());
+            nuevaReserva.setDateEntry("2026-05-14"); // Fecha actual de ejemplo
+            nuevaReserva.setDateLeave("2026-05-15");
+            nuevaReserva.setPurchaseStatus('P'); // Pendiente
+
+            BookDAO dao = new BookDAO(nuevaReserva);
+            dao.addBook();
+
+            // OPCIONAL: Actualizar el estado de la habitación a 'O' (Ocupada)
+            habitacion.setStatus('O');
+            RoomDAO rDao = new RoomDAO(habitacion);
+            rDao.updateRoom();
+
+            JOptionPane.showMessageDialog(null, "Check-in realizado correctamente.");
+
+            // Refrescamos las listas para que la habitación ocupada ya no aparezca
+            loadLists();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+        }
+    }
+
+    public JPanel getCheckInPanel() {
+        return checkInPanel;
     }
 }
