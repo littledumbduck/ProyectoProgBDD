@@ -20,6 +20,7 @@ public class CustomerForm {
     private JTextField txtPhone;
     private JButton btnUpdateCustomer;
     private JButton btnDeleteCustomer;
+    private JPanel btnPanel;
 
     // --- AQUÍ EMPIEZA EL CONSTRUCTOR QUE AÑADE LA LÓGICA AL BOTÓN ---
     public CustomerForm() {
